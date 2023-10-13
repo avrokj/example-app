@@ -12,8 +12,10 @@ class ClientController extends Controller
      */
     public function index()
     {
-        // return Author::all(); // kuvab kõik
-        return Client::paginate(10); // anna lehest 10 tk
+        return view('clients.index', [
+            'clients' => Client::all()
+        ]);
+        //return Client::paginate(10); // anna lehest 10 tk
     }
 
     /**

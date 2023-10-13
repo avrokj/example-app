@@ -12,7 +12,9 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        return view('orders.index', [
+            'orders' => Order::all()
+        ]);
     }
 
     /**
