@@ -13,7 +13,8 @@ class ClientController extends Controller
     public function index()
     {
         return view('clients.index', [
-            'clients' => Client::all()
+            /* 'clients' => Client::all() */
+            'clients' => Client::orderBy('first_name')->paginate(20)
         ]);
         //return Client::paginate(10); // anna lehest 10 tk
     }
@@ -63,6 +64,7 @@ class ClientController extends Controller
      */
     public function destroy(Client $client)
     {
-        //
+        $client->delete();
+        return redirect('/clients');
     }
 }

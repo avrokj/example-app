@@ -13,9 +13,11 @@ class OrderController extends Controller
     public function index()
     {
         return view('orders.index', [
-            'orders' => Order::all()
+            /* 'orders' => Order::all() */
+            'orders' => Order::orderBy('id', 'desc')->paginate(20)
         ]);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -62,6 +64,7 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        //
+        $order->delete();
+        return redirect('/orders');
     }
 }
