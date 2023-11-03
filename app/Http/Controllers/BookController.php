@@ -46,14 +46,22 @@ class BookController extends Controller
         return view('books.view', [
             'book' => $book,
         ]);
-    } */
-    public function show(Book $book): View
+    } ALGNE */
+    /*     public function show(Book $book): View
     {
         $book = Book::with('authors')->where('id', $book->id)->first();
         // dd($book);
         return view('books.view', [
             'book' => $book,
 
+        ]);
+    } ANDRUSEGA ARENDATUD */
+
+    public function show(Book $book): View
+    {
+        return view('books.show', [
+            'book' => $book,
+            'authors' => $book->authors
         ]);
     }
 

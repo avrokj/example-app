@@ -42,7 +42,7 @@
                 <x-input-error :messages="$errors->get('summary')" class="mt-2" />
               <div class="mt-4 space-x-2">
                   <x-primary-button>{{ __('Save') }}</x-primary-button>
-                  <a href="{{ route('books.index') }}">{{ __('Cancel') }}</a>
+                  <a href="{{ route('books.index') }}" class="text-white bg-red-500 hover:bg-red-600 rounded-md text-sm px-4 py-2 focus:outline-none uppercase font-semibold text-xs">{{ __('Cancel') }}</a>
               </div>
           </form>
         </div>
