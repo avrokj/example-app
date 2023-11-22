@@ -32,7 +32,8 @@ class Book extends Model
     protected function price(): Attribute
     {
         return Attribute::make(
-            get: fn (float $value) => round($value, 2),
+            get: fn (float $value) => number_format(round($value, 2), 2, ','),
+            set: fn (string $value) => str_replace(',', '.', $value),
         );
     }
 }
