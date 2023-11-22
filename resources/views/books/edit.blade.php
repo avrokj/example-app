@@ -19,13 +19,13 @@
               <x-text-input name="language" value="{{ old('language', $book->language) }}" />
                 <x-input-error :messages="$errors->get('language')" class="mt-2" />
                   
-              <x-input-label for="release_date" value="Released" class="pt-4" />              
-                  <x-text-input name="release_date" value="{{ old('release_date', $book->release_date) }}" />
-                <x-input-error :messages="$errors->get('release_date')" class="mt-2" />
-                  
               <x-input-label for="price" value="Price" class="pt-4" />              
                   <x-text-input name="price" value="{{ old('price', $book->price) }}" />
                 <x-input-error :messages="$errors->get('price')" class="mt-2" />
+                <x-input-error :messages="$errors->get('release_date')" class="mt-2" />
+                  
+              <x-input-label for="release_date" value="Released" class="pt-4" />              
+                  <x-text-input name="release_date" value="{{ old('release_date', $book->release_date) }}" />
                 <x-input-error :messages="$errors->get('release_date')" class="mt-2" />
                   
               <x-input-label for="pages" value="Pages" class="pt-4" />              
@@ -36,6 +36,14 @@
               <x-input-label for="stock_saldo" value="Stock saldo" class="pt-4" />              
                   <x-text-input name="stock_saldo" value="{{ old('stock_saldo', $book->stock_saldo) }}" />
                 <x-input-error :messages="$errors->get('stock_saldo')" class="mt-2" />
+                  
+              <x-input-label for="type" value="Type" class="pt-4" />
+                  <select class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" name="type" id="type">
+                    <option value="{{ old('type', $book->type) }}">{{ old('type', $book->type) }}</option>
+                    <option value="new">new</option>
+                    <option value="ebook">ebook</option>
+                    <option value="used">used</option>
+                  </select>
               
               <x-input-label for="summary" value="Summary" class="pt-4" />
                   <textarea name="summary" class="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">{{ old('summary', $book->summary) }}</textarea>

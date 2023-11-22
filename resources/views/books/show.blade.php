@@ -14,21 +14,21 @@
               <div class=""><img src="{{ $book->cover_path }}" class="object-contain w-full"></div>
               <div class="col-span-3">
                 <h1 class="text-2xl">{{ $book->title }}</h1>
-                <p class="py-2"><strong>Author: </strong>
-                  <ul>
-                    @foreach ($book->authors as $author)
-                    <li>
-                      {{ $author->first_name }} {{ $author->last_name }}
-                    </li>
+                <p class="py-2"><strong>Author: </strong> 
+                    @foreach ($book->authors as $author)                    
+                      @if (count($book->authors) < 2)
+                        {{ $author->first_name }} {{ $author->last_name }}
+                      @else
+                        {{ $author->first_name }} {{ $author->last_name }},
+                      @endif
                     @endforeach
-                    </ul>
-                  <span></span>
                 </p>
-                <p class="py-2"><strong>Keel:</strong> {{ $book->language }}</p>
-                <p class="py-2"><strong>Hind:</strong> <?= number_format($book['price'], 2); ?> € <small><em>(keskmine lehe hind: <?= round($book['price'] / $book['pages'], 2); ?> €)</em></small></p>
-                <p class="py-2"><strong>Lehti:</strong> {{ $book->pages }}</p>
-                <p class="py-2"><strong>Laoseis:</strong> {{ $book->stock_saldo }}</p>
-                <p class="py-2"><strong>Raamatu tüüp:</strong> {{ $book->type }}</p>
+                <p class="py-2"><strong>Language:</strong> {{ $book->language }}</p>
+                <p class="py-2"><strong>Price:</strong> {{ $book->price }} €</p>
+                <p class="py-2"><strong>Released:</strong> {{ $book->release_date }}</p>
+                <p class="py-2"><strong>Pages:</strong> {{ $book->pages }}</p>
+                <p class="py-2"><strong>Stock:</strong> {{ $book->stock_saldo }}</p>
+                <p class="py-2"><strong>Type:</strong> {{ $book->type }}</p>
                 <!-- <p class="py-2"><strong>Olek:</strong> {{ $book->is_deleted }}</p> -->
               </div>
             </div>

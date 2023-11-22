@@ -88,10 +88,11 @@ class BookController extends Controller
                 'release_date' => 'required|integer|between:1901,2023',
                 'language' => 'required|string|max:255',
                 'summary' => 'required|string|max:255',
-                'price' => 'required|decimal:4',
+                //'price' => 'required|decimal:0,2',
+                'price' => ['required', 'regex:/^\d+(,\d$|,\d{2})?$/i'],
                 'stock_saldo' => 'required|string|max:45',
                 'pages' => 'required|int:11',
-                //'type' => 'required|string|max:255',
+                'type' => 'required|string|max:255',
             ],
             [
                 'release_date.required' => 'The release year filed is required.',
@@ -101,7 +102,7 @@ class BookController extends Controller
 
         $book->update($validated);
 
-        return redirect(route('books.index'));
+        return redirect(route('books.show', $book));
     }
 
     /**
