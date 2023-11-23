@@ -25,11 +25,31 @@ class AuthorController extends Controller
     }
 
     /**
+     * Search.
+     */
+    // https://www.educative.io/answers/how-to-implement-search-in-laravel
+
+    public function searchauthors(Request $request)
+    {
+        // Get the search value from the request
+        $searchauthors = $request->input('searchauthors');
+
+        // Search in the title and body columns from the posts table
+        $authors = Author::query()
+            ->where('first_name', 'LIKE', "%{$searchauthors}%")
+            ->orWhere('last_name', 'LIKE', "%{$searchauthors}%")
+            ->get();
+
+        // Return the search view with the resluts compacted
+        return view('authors.search', compact('authors'));
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+        return view('authors.add');
     }
 
     /**
@@ -37,7 +57,23 @@ class AuthorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // $this->authorize('update', $author);
+        $validated = $request->validate(
+            [
+                'first_name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+            ],
+            [
+                'first_name.required' => 'The first name filed is required.',
+                'last_name.required' => 'The last name filed is required.'
+            ]
+        );
+
+        Author::create($validated);
+
+        return view('authors.index', [
+            'authors' => Author::all()
+        ]);
     }
 
     /**

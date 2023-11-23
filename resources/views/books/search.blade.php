@@ -8,7 +8,7 @@
       </div>
       <div>   
         <form action="{{ route('search') }}" method="GET">
-          <x-text-input type="text" name="search books here..." value="{{ request('search') }}" required/>
+          <x-text-input type="text" name="search" placeholder="Search books here..." value="{{ request('search') }}" required/>
           <x-primary-button type="submit">Search</x-primary-button>
         </form>
       </div>
@@ -83,14 +83,12 @@
               </tr> 
             @endforeach
             @else 
-                <div>
-                    <h2>No books found, search again or turn back to <a href="/">books page</a>.</h2>
+                <div class="px-4">
+                    <h2>No books found, search again or turn back to <a href="/books">books page</a>.</h2>
                 </div>
             @endif         
             </tbody>
           </table>
-        <div class="pt-4">
-        </div>
         </div>
       </div>
     </div>

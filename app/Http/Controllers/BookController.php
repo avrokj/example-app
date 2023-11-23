@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Author;
 use App\Models\Book;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -23,6 +24,10 @@ class BookController extends Controller
         // return Book::paginate(10); // anna lehest 10 tk
     }
 
+    /**
+     * Search.
+     */
+    // https://www.educative.io/answers/how-to-implement-search-in-laravel
 
     public function search(Request $request)
     {
@@ -33,6 +38,9 @@ class BookController extends Controller
         $books = Book::query()
             ->where('title', 'LIKE', "%{$search}%")
             ->orWhere('summary', 'LIKE', "%{$search}%")
+            ->orWhere('language', 'LIKE', "%{$search}%")
+            ->orWhere('release_date', 'LIKE', "%{$search}%")
+            ->orWhere('type', 'LIKE', "%{$search}%")
             ->get();
 
         // Return the search view with the resluts compacted
@@ -87,8 +95,15 @@ class BookController extends Controller
      */
     public function edit(Book $book): View
     {
+
+        $authors = Author::whereDoesntHave('books', function (Builder $query) use ($book) { // Builder on objekt
+            $query->whereNot('book_id', $book->id);
+        })->orderBy('first_name')->get();
+
+
         return view('books.edit', [
             'book' => $book,
+            'authors' => $authors,
         ]);
     }
 
@@ -103,6 +118,7 @@ class BookController extends Controller
             [
                 'title' => 'required|string|max:255',
                 'release_date' => 'required|integer|between:1901,2023',
+                //'cover_path' => 'required|string|max:255',
                 'language' => 'required|string|max:255',
                 'summary' => 'required|string|max:255',
                 //'price' => 'required|decimal:0,2',
@@ -134,9 +150,18 @@ class BookController extends Controller
     /**
      * Remove the author from book.
      */
-    public function detachAuthor(Author $author)
+    public function detachAuthor(Request $request, Book $book): RedirectResponse
     {
-        $author->delete();
-        return redirect('/books');
+        $book->authors()->detach($request->author_id);
+        return redirect()->back();
+    }
+
+    /**
+     * Add the author from book.
+     */
+    public function attachAuthor(Request $request, Book $book): RedirectResponse
+    {
+        $book->authors()->attach($request->author_id);
+        return redirect()->back();
     }
 }

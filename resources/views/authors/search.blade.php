@@ -3,7 +3,7 @@
     <div class="flex justify-between">
       <div>
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-          {{ __('Authors') }} <!-- __( tähendab tõlke funktsiooni. Topelt nibudega sulud tähendavad php koodi -->
+          {{ __('Search author') }} <!-- __( tähendab tõlke funktsiooni. Topelt nibudega sulud tähendavad php koodi -->
         </h2> 
       </div>
       <div>   
@@ -11,9 +11,6 @@
           <x-text-input type="text" name="searchauthors" placeholder="Search authors here..." value="{{ request('searchauthors') }}" required/>
           <x-primary-button type="submit">Search</x-primary-button>
         </form>
-      </div>
-      <div>
-        <a href="{{ route('authors.create') }}"><x-primary-button>{{ __('Create author') }}</x-primary-button></a>
       </div>
     </div>
   </x-slot>
@@ -31,6 +28,7 @@
               </tr>
             </thead>
             <tbody>
+              @if($authors->isNotEmpty())
           @foreach ($authors as $author)
               <tr class="border-b justify-between items-center transition duration-300 ease-in-out hover:bg-neutral-50">
                 <td>
@@ -54,12 +52,14 @@
                   </div>
                 </td>
               </tr>
-            @endforeach          
-            </tbody>
-          </table>
-        <div class="pt-4">
-          {{ $authors->links() }}
-        </div>
+              @endforeach
+              @else 
+                  <div>
+                      <h2>No books found, search again or turn back to <a href="/books">books page</a>.</h2>
+                  </div>
+              @endif         
+              </tbody>
+            </table> 
         </div>
       </div>
     </div>

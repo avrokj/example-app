@@ -62,15 +62,31 @@
             @foreach ($book->authors as $author)
                 <div class="flex items-center gap-2 p-1">
                   {{ $author->first_name }} {{ $author->last_name }} 
-                  <form method="POST" action="{{ route('authors.destroy', $author) }}">
+                  <form method="POST" action="{{ route('book.detach.author', $book) }}">
                     @csrf
                     @method('delete')
+                    <input type="hidden" value="{{ $author->id }}" name="author_id">
                     <x-danger-button onclick="event.preventDefault(); this.closest('form').submit();">
                       {{ __('Delete') }}
                     </x-danger-button>
                   </form>
                 </div>
             @endforeach
+
+            <form method="POST" action="{{ route('book.attach.author', $book) }}" class="flex flex-col">
+              @csrf
+              @method('post')
+              <x-input-label for="author_id" value="Add author:" class="pt-4" />
+                  <select class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" name="author_id" id="author_id">                   
+                    <option selected="true" disabled="disabled">-- choose author --</option>
+                    @foreach ($authors as $author)
+                      <option value="{{ $author->id }}">{{ $author->first_name }} {{ $author->last_name }}</option>
+                    @endforeach
+                  </select>
+              <div class="mt-4 space-x-2">
+                  <x-primary-button>{{ __('Add author') }}</x-primary-button>
+              </div>
+          </form> 
           </div>
         </div>
       </div>
