@@ -1,7 +1,7 @@
 <x-app-layout>
   <x-slot name="header">
     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-      {{ __('Edit Book') }} <!-- __( tähendab tõlke funktsiooni. Topelt nibudega sulud tähendavad php koodi -->
+      {{ __('Edit Book') }}: {{ $book->title }} <!-- __( tähendab tõlke funktsiooni. Topelt nibudega sulud tähendavad php koodi -->
     </h2>
   </x-slot>
   <div class="py-12">
@@ -39,11 +39,15 @@
                   
               <x-input-label for="type" value="Type" class="pt-4" />
                   <select class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" name="type" id="type">
-                    <option value="{{ old('type', $book->type) }}">{{ old('type', $book->type) }}</option>
-                    <option value="new">new</option>
-                    <option value="ebook">ebook</option>
-                    <option value="used">used</option>
+                    <option value="new" {{ $book->type == "new" ? "selected" : "" }}>new</option>
+                    <option value="ebook" {{ $book->type == "ebook" ? "selected" : "" }}>ebook</option>
+                    <option value="used" {{ $book->type == "used" ? "selected" : "" }}>used</option>
                   </select>
+              
+                  <x-input-label for="pages" value="Pages" class="pt-4" />              
+                  <x-text-input name="pages" value="{{ old('pages', $book->pages) }}" />
+                <x-input-error :messages="$errors->get('pages')" class="mt-2" />
+                <x-input-error :messages="$errors->get('release_date')" class="mt-2" />
               
               <x-input-label for="summary" value="Summary" class="pt-4" />
                   <textarea name="summary" class="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">{{ old('summary', $book->summary) }}</textarea>
@@ -52,7 +56,22 @@
                   <x-primary-button>{{ __('Save') }}</x-primary-button>
                   <a href="{{ route('books.index') }}" class="text-white bg-red-500 hover:bg-red-600 rounded-md text-sm px-4 py-2 focus:outline-none uppercase font-semibold text-xs">{{ __('Cancel') }}</a>
               </div>
-          </form>
+          </form> 
+          <div class="py-6 text-gray-900 flex-grow overflow-auto"> 
+            <x-input-label for="summary" value="Authors" class="pt-4 text-3xl" />   
+            @foreach ($book->authors as $author)
+                <div class="flex items-center gap-2 p-1">
+                  {{ $author->first_name }} {{ $author->last_name }} 
+                  <form method="POST" action="{{ route('authors.destroy', $author) }}">
+                    @csrf
+                    @method('delete')
+                    <x-danger-button onclick="event.preventDefault(); this.closest('form').submit();">
+                      {{ __('Delete') }}
+                    </x-danger-button>
+                  </form>
+                </div>
+            @endforeach
+          </div>
         </div>
       </div>
     </div>

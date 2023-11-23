@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Author;
 use App\Models\Book;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -20,6 +21,22 @@ class BookController extends Controller
         ]);
         // return Book::all(); // kuvab kõik
         // return Book::paginate(10); // anna lehest 10 tk
+    }
+
+
+    public function search(Request $request)
+    {
+        // Get the search value from the request
+        $search = $request->input('search');
+
+        // Search in the title and body columns from the posts table
+        $books = Book::query()
+            ->where('title', 'LIKE', "%{$search}%")
+            ->orWhere('summary', 'LIKE', "%{$search}%")
+            ->get();
+
+        // Return the search view with the resluts compacted
+        return view('books.search', compact('books'));
     }
 
     /**
@@ -111,6 +128,15 @@ class BookController extends Controller
     public function destroy(Book $book)
     {
         $book->delete();
+        return redirect('/books');
+    }
+
+    /**
+     * Remove the author from book.
+     */
+    public function detachAuthor(Author $author)
+    {
+        $author->delete();
         return redirect('/books');
     }
 }

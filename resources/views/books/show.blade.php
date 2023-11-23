@@ -1,7 +1,7 @@
 <x-app-layout>
   <x-slot name="header">
     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-      {{ __('Books') }} <!-- __( tähendab tõlke funktsiooni. Topelt nibudega sulud tähendavad php koodi -->
+      {{ $book->title }}
     </h2>
   </x-slot>
 
@@ -14,12 +14,15 @@
               <div class=""><img src="{{ $book->cover_path }}" class="object-contain w-full"></div>
               <div class="col-span-3">
                 <h1 class="text-2xl">{{ $book->title }}</h1>
-                <p class="py-2"><strong>Author: </strong> 
-                    @foreach ($book->authors as $author)                    
+                <p class="py-2"><strong>Author: </strong>
+                    @foreach ($book->authors as $author)            
                       @if (count($book->authors) < 2)
                         {{ $author->first_name }} {{ $author->last_name }}
                       @else
-                        {{ $author->first_name }} {{ $author->last_name }},
+                        {{ $author->first_name }} {{ $author->last_name }}
+                        @if (!$loop->last)
+                          ,
+                        @endif
                       @endif
                     @endforeach
                 </p>

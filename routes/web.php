@@ -30,13 +30,15 @@ Route::get('/dashboard', function () {
 // Route::middleware('auth')->prefix('/admin')->group(function () { kui soov eraldi nn kaustale reegel lisada
 Route::middleware('auth')->group(function () {
     Route::resource('authors', AuthorController::class); // php artisan route:list
-    Route::resource('clients', ClientController::class); // php artisan route:list
-    Route::resource('orders', OrderController::class); // php artisan route:list
-    Route::resource('clients', ClientController::class); // php artisan route:list
-    Route::resource('books', BookController::class); // php artisan route:list
+    Route::resource('clients', ClientController::class);
+    Route::resource('orders', OrderController::class);
+    Route::resource('clients', ClientController::class);
+    Route::resource('books', BookController::class);
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::delete('/detachauthor/{author}', [BookController::class, 'detachAuthor'])->name('book.detach.author');
+    Route::get('search', [BookController::class, 'search'])->name('search');
 });
 
 
